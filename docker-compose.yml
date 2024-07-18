@@ -1,7 +1,6 @@
-version: '3.7'
 services:
   minio:
-    image: quay.io/minio/minio
+    image: quay.io/minio/minio:RELEASE.2024-07-16T23-46-41Z-cpuv1
     command: server --console-address ":9001" /data
     ports:
       - 9000:9000
@@ -16,7 +15,7 @@ services:
       - ./volumes/minio/data:/data
 
   redpanda:
-    image: docker.redpanda.com/vectorized/redpanda:v22.2.2
+    image: docker.redpanda.com/redpandadata/redpanda-unstable:v24.2.1-rc4
     command:
       - redpanda start
       - --smp 1
@@ -40,7 +39,7 @@ services:
       - ./volumes/redpanda/data:/var/lib/redpanda/data
 
   console:
-    image: docker.redpanda.com/vectorized/console:latest
+    image: docker.redpanda.com/redpandadata/console:v2.6.1
     entrypoint: /bin/sh
     command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
     environment:
@@ -58,7 +57,7 @@ services:
       - redpanda
 
   redpanda-rrr:
-    image: docker.redpanda.com/vectorized/redpanda:v22.2.2
+    image: docker.redpanda.com/redpandadata/redpanda-unstable:v24.2.1-rc4
     command:
       - redpanda start
       - --smp 1
@@ -83,7 +82,7 @@ services:
       - ./volumes/redpanda-rrr/data:/var/lib/redpanda/data
 
   console-rrr:
-    image: docker.redpanda.com/vectorized/console:latest
+    image: docker.redpanda.com/vectorized/console:v2.6.1
     entrypoint: /bin/sh
     command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
     environment:
